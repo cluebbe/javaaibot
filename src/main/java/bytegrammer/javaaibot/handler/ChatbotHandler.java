@@ -24,7 +24,7 @@ public class ChatbotHandler extends Restlet{
 				response.setEntity(objectMapper.writeValueAsString( apiRequest), MediaType.APPLICATION_ALL_JSON);
 		
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
+				response.setStatus(Status.SERVER_ERROR_INTERNAL, e);
 				e.printStackTrace();
 			}
 		} else {
@@ -33,3 +33,4 @@ public class ChatbotHandler extends Restlet{
 
 	}
 }
+∫
