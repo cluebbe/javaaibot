@@ -7,12 +7,26 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import bytegrammer.javaaibot.data.ApiRequest;
+
 public class ChatbotHandler extends Restlet{
 	public void handle(Request request, Response response) {
 
 		Method m = request.getMethod();
 		if (m.equals(Method.POST)) {
-			response.setEntity("Testing Post request", MediaType.TEXT_PLAIN);
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			ApiRequest apiRequest = new ApiRequest("Who are you");
+			try {
+				response.setEntity(objectMapper.writeValueAsString( apiRequest), MediaType.APPLICATION_ALL_JSON);
+		
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			response.setStatus(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED, "Method not allowed");
 		}
