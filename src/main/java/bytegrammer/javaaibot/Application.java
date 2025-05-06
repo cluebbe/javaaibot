@@ -4,6 +4,7 @@ import org.restlet.Component;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 import bytegrammer.javaaibot.handler.MainPageHandler;
+import bytegrammer.javaaibot.handler.ChatbotHandler;
 
 public class Application {
 
@@ -15,11 +16,9 @@ public class Application {
 		final Router router = new Router(component.getContext().
 				createChildContext());
 				router.attach("/", new MainPageHandler());
+				router.attach("/chatbot", new ChatbotHandler());
 
-				component.getDefaultHost().attach(router);
-
-
-			
+				component.getDefaultHost().attach(router);			
 
 
 		try {
