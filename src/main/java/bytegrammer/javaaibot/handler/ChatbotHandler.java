@@ -40,13 +40,10 @@ public class ChatbotHandler extends Restlet {
 						.post(Entity.entity(apiRequest, jakarta.ws.rs.core.MediaType.APPLICATION_JSON),
 								ApiResponse.class);
 
-				if (apiResponse != null && !apiResponse.getChoices().isEmpty()
-						&& (apiResponse.getChoices().get(0) != null)
-						&& (apiResponse.getChoices().get(0).getMessage() != null)
-						&& !apiResponse.getChoices().get(0).getMessage().isBlank()) {
+				if (apiResponse != null && apiResponse.getMessage() != null) {
 					response.setEntity(
 							objectMapper.writeValueAsString(
-									new ClientResponse(apiResponse.getChoices().get(0).getMessage())),
+									new ClientResponse(apiResponse.getMessage())),
 							MediaType.APPLICATION_ALL_JSON);
 
 				} else {
