@@ -1,8 +1,10 @@
 package bytegrammer.javaaibot.data;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ApiResponse {
@@ -11,24 +13,18 @@ public class ApiResponse {
 	
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Choice {
-		@JsonIgnoreProperties(ignoreUnknown = true)
-		public static class AssistantMessage {
-			String content;
+		
 
-			public String getContent() {
-				return content;
-			}
-
-			public void setContent(String content) {
-				this.content = content;
-			}	
-
-		}
-		AssistantMessage message;
-		public AssistantMessage getMessage() {
+	    @JsonProperty("message")
+	    private void unpackNested(Map<String,Object> message) {
+	        this.message = (String)message.get("content");
+	    }
+		
+		String message;
+		public String getMessage() {
 			return message;
 		}
-		public void setMessage(AssistantMessage message) {
+		public void setMessage(String message) {
 			this.message = message;
 		}	
 		

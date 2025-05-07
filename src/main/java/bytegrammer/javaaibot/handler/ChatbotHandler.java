@@ -43,10 +43,12 @@ public class ChatbotHandler extends Restlet {
 				if (apiResponse != null && !apiResponse.getChoices().isEmpty()
 						&& (apiResponse.getChoices().get(0) != null)
 						&& (apiResponse.getChoices().get(0).getMessage() != null)
-						&& (apiResponse.getChoices().get(0).getMessage().getContent() != null)
-						&& !apiResponse.getChoices().get(0).getMessage().getContent().isBlank()) {
-					response.setEntity(objectMapper.writeValueAsString(new ClientResponse(apiResponse.getChoices().get(0).getMessage().getContent())), MediaType.APPLICATION_ALL_JSON);
-					
+						&& !apiResponse.getChoices().get(0).getMessage().isBlank()) {
+					response.setEntity(
+							objectMapper.writeValueAsString(
+									new ClientResponse(apiResponse.getChoices().get(0).getMessage())),
+							MediaType.APPLICATION_ALL_JSON);
+
 				} else {
 					throw new IllegalStateException("AI-API responded with empty message");
 				}
