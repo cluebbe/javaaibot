@@ -11,6 +11,8 @@ public class ApiRequest {
 		String role;
 		String content;
 
+		public ChatMessage() {}
+		
 		public ChatMessage(String content) {
 			this.role = "user";
 			this.content = content;
@@ -30,6 +32,8 @@ public class ApiRequest {
 	private Integer max_tokens;
 	private Boolean stream;
 
+	public ApiRequest() {}
+	
 	public ApiRequest(String messageContent) {
 		this.model = "grok-2-1212";
 		this.messages = new ArrayList<ChatMessage>();
