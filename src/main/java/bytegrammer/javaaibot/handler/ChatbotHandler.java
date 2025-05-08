@@ -6,12 +6,14 @@ import org.restlet.Restlet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
+import org.restlet.representation.Representation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bytegrammer.javaaibot.Constants;
 import bytegrammer.javaaibot.data.ApiRequest;
 import bytegrammer.javaaibot.data.ApiResponse;
+import bytegrammer.javaaibot.data.ClientRequest;
 import bytegrammer.javaaibot.data.ClientResponse;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -26,13 +28,22 @@ public class ChatbotHandler extends Restlet {
 		if (m.equals(Method.POST)) {
 
 			ObjectMapper objectMapper = new ObjectMapper();
-			ApiRequest apiRequest = new ApiRequest("Who are you");
+			
+		
+			
 			try {
+				String clientRequestBody = request.getEntity().getText();
+				ClientRequest clientRequest = objectMapper.readValue(clientRequestBody, ClientRequest.class);
+				
+				if(clientRequest == null | clientRequest.getRequest() == null | clientRequest.getRequest()== null){
+					response.setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+					return;
+				}
+				ApiRequest apiRequest = new ApiRequest(clientRequest.getRequest());
+				
+				
 				Client client = ClientBuilder.newClient();
-				WebTarget webTarget = client.target("https://api.x.ai").path("/v1/chat/completions"); // REST_URI is a
-																										// constant
-																										// containing
-																										// the URL
+				WebTarget webTarget = client.target("https://api.x.ai").path("/v1/chat/completions"); 
 
 				ApiResponse apiResponse = webTarget.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
 						.header(HttpHeaders.AUTHORIZATION, "Bearer " + Constants.API_KEY)
