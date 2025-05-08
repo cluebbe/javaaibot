@@ -35,11 +35,15 @@ public class ChatbotHandler extends Restlet {
 				String clientRequestBody = request.getEntity().getText();
 				ClientRequest clientRequest = objectMapper.readValue(clientRequestBody, ClientRequest.class);
 				
-				if(clientRequest == null | clientRequest.getRequest() == null | clientRequest.getRequest()== null){
+				if(clientRequest == null | clientRequest.getRequest() == null | clientRequest.getImpersonate()== null){
 					response.setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 					return;
 				}
-				ApiRequest apiRequest = new ApiRequest(clientRequest.getRequest());
+				
+				String userMessagePretext = "Please answer the following question as if you were an actor impersonating " + clientRequest.getImpersonate() + " (100 Tokens max): ";
+				
+				
+				ApiRequest apiRequest = new ApiRequest(userMessagePretext + clientRequest.getRequest());
 				
 				
 				Client client = ClientBuilder.newClient();
@@ -51,6 +55,7 @@ public class ChatbotHandler extends Restlet {
 						.post(Entity.entity(apiRequest, jakarta.ws.rs.core.MediaType.APPLICATION_JSON),
 								ApiResponse.class);
 
+				
 				if (apiResponse != null && apiResponse.getMessage() != null) {
 					response.setEntity(
 							objectMapper.writeValueAsString(
